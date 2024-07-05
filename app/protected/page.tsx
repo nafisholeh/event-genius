@@ -17,41 +17,58 @@ export default async function ProtectedPage() {
   }
 
   return (
-    <div className="flex-1 w-full flex flex-col gap-20 items-center">
-      <div className="w-full">
-        <div className="py-6 font-bold bg-purple-950 text-center">
-          This is a protected page that you can only see as an authenticated
-          user
-        </div>
-        <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
-          <div className="w-full max-w-4xl flex justify-between items-center p-3 text-sm">
-            <DeployButton />
-            <AuthButton />
+    <div className="flex h-screen w-full bg-gray-100">
+      {/* Sidebar */}
+      <div className="w-1/4 p-4 bg-white border-r">
+        <div className="mb-8">
+          <h2 className="text-lg font-bold mb-2">Your Plan</h2>
+          <div className="p-4 bg-gray-100 rounded-lg">
+            <p className="font-semibold">Beta User</p>
+            <p className="text-sm text-gray-500">Expiry date is unavailable</p>
           </div>
-        </nav>
+        </div>
+
+        <div className="mb-8">
+          <h2 className="text-lg font-bold mb-2">Chat Messages</h2>
+          <div className="p-4 bg-gray-100 rounded-lg">
+            <p className="text-2xl font-bold">0/50</p>
+          </div>
+        </div>
+
+        <div>
+          <h2 className="text-lg font-bold mb-2">Chats</h2>
+          <div className="space-y-2">
+            <button className="w-full p-2 text-left bg-gray-100 rounded-lg">
+              Chat with John Doe
+            </button>
+            <button className="w-full p-2 text-left bg-gray-100 rounded-lg">
+              Chat with Jane Doe
+            </button>
+            <button className="w-full p-2 text-left bg-gray-100 rounded-lg">
+              Chat with Test User
+            </button>
+            <button className="w-full p-2 text-left bg-black text-white rounded-lg">
+              Start New Chat
+            </button>
+          </div>
+        </div>
       </div>
 
-      <div className="flex-1 flex flex-col gap-20 max-w-4xl px-3">
-        <Header />
-        <main className="flex-1 flex flex-col gap-6">
-          <h2 className="font-bold text-4xl mb-4">Next steps</h2>
-          <FetchDataSteps />
-        </main>
+      {/* Main Chat Window */}
+      <div className="flex-1 flex flex-col p-4">
+        <h2 className="text-xl font-bold mb-4">Chat UI</h2>
+        <div className="flex-1 p-4 bg-white border rounded-lg">
+          <p className="text-gray-500">Welcome to the chat!</p>
+        </div>
+        <div className="flex mt-4">
+          <input
+            type="text"
+            placeholder="Type your message..."
+            className="flex-1 p-2 border rounded-l-lg"
+          />
+          <button className="p-2 bg-black text-white rounded-r-lg">Send</button>
+        </div>
       </div>
-
-      <footer className="w-full border-t border-t-foreground/10 p-8 flex justify-center text-center text-xs">
-        <p>
-          Powered by{" "}
-          <a
-            href="https://supabase.com/?utm_source=create-next-app&utm_medium=template&utm_term=nextjs"
-            target="_blank"
-            className="font-bold hover:underline"
-            rel="noreferrer"
-          >
-            Supabase
-          </a>
-        </p>
-      </footer>
     </div>
   );
 }
