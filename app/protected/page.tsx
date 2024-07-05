@@ -1,8 +1,4 @@
-import DeployButton from "@/components/DeployButton";
-import AuthButton from "@/components/AuthButton";
 import { createClient } from "@/utils/supabase/server";
-import FetchDataSteps from "@/components/tutorial/FetchDataSteps";
-import Header from "@/components/Header";
 import { redirect } from "next/navigation";
 
 export default async function ProtectedPage() {
@@ -38,18 +34,10 @@ export default async function ProtectedPage() {
         <div>
           <h2 className="text-lg font-bold mb-2">Chats</h2>
           <div className="space-y-2">
-            <button className="w-full p-2 text-left bg-gray-100 rounded-lg">
-              Chat with John Doe
-            </button>
-            <button className="w-full p-2 text-left bg-gray-100 rounded-lg">
-              Chat with Jane Doe
-            </button>
-            <button className="w-full p-2 text-left bg-gray-100 rounded-lg">
-              Chat with Test User
-            </button>
-            <button className="w-full p-2 text-left bg-black text-white rounded-lg">
-              Start New Chat
-            </button>
+            <button className="w-full p-2 text-left bg-gray-100 rounded-lg">Chat with John Doe</button>
+            <button className="w-full p-2 text-left bg-gray-100 rounded-lg">Chat with Jane Doe</button>
+            <button className="w-full p-2 text-left bg-gray-100 rounded-lg">Chat with Test User</button>
+            <button className="w-full p-2 text-left bg-black text-white rounded-lg">Start New Chat</button>
           </div>
         </div>
       </div>
@@ -61,11 +49,7 @@ export default async function ProtectedPage() {
           <p className="text-gray-500">Welcome to the chat!</p>
         </div>
         <div className="flex mt-4">
-          <input
-            type="text"
-            placeholder="Type your message..."
-            className="flex-1 p-2 border rounded-l-lg"
-          />
+          <input type="text" placeholder="Type your message..." className="flex-1 p-2 border rounded-l-lg" />
           <button className="p-2 bg-black text-white rounded-r-lg">Send</button>
         </div>
       </div>

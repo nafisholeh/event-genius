@@ -8,8 +8,7 @@ export default function Header() {
         <a
           href="https://supabase.com/?utm_source=create-next-app&utm_medium=template&utm_term=nextjs"
           target="_blank"
-          rel="noreferrer"
-        >
+          rel="noreferrer">
           <SupabaseLogo />
         </a>
         <span className="border-l rotate-45 h-6" />
@@ -24,17 +23,11 @@ export default function Header() {
           href="https://supabase.com/?utm_source=create-next-app&utm_medium=template&utm_term=nextjs"
           target="_blank"
           className="font-bold hover:underline"
-          rel="noreferrer"
-        >
+          rel="noreferrer">
           Supabase
         </a>{" "}
         and{" "}
-        <a
-          href="https://nextjs.org/"
-          target="_blank"
-          className="font-bold hover:underline"
-          rel="noreferrer"
-        >
+        <a href="https://nextjs.org/" target="_blank" className="font-bold hover:underline" rel="noreferrer">
           Next.js
         </a>
       </p>
