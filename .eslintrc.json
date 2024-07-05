@@ -22,7 +22,7 @@
       "prettier"
     ],
     "rules": {
-      "prettier/prettier": ["error", { "endOfLine": "auto" }, { "usePrettierrc": true }],
+      "prettier/prettier": ["error", { "singleQuote": false, "endOfLine": "auto" }, { "usePrettierrc": true }],
       "react/react-in-jsx-scope": "off",
       "react/prop-types": "off",
       "react/display-name": "off",
