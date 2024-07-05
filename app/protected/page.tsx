@@ -1,14 +1,11 @@
-import { createClient } from "@/utils/supabase/server";
+import ValidateUserAuthFactory from "@/factory/ValidateUserAuthFactory";
 import { redirect } from "next/navigation";
 
 export default async function ProtectedPage() {
-  const supabase = createClient();
+  const validateUserAuthFactory = new ValidateUserAuthFactory();
+  const isValidAuth = validateUserAuthFactory.execute();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
+  if (!isValidAuth) {
     return redirect("/login");
   }
 
