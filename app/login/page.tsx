@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { SubmitButton } from "./submit-button";
 import SendOtpToEmailFactory from "@/factory/SendOtpToEmailFactory";
+import VerifyOtpFactory from "@/factory/VerifyOtpFactory";
 
 export default function Login({
   searchParams,
@@ -29,15 +29,11 @@ export default function Login({
 
     const otp = formData.get("otp") as string;
     const email = formData.get("email") as string;
-    const supabase = createClient();
 
-    const { error } = await supabase.auth.verifyOtp({
-      email,
-      token: otp,
-      type: 'email',
-    });
-
-    if (error) {
+    try {
+      const verifyOtpFactory = new VerifyOtpFactory();
+      await verifyOtpFactory.execute({ email, otp });
+    } catch (error) {
       return redirect(`/login?emailSubmitted=true&email=${email}&message=Invalid OTP`);
     }
 
