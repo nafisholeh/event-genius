@@ -2,6 +2,7 @@ import Link from "next/link";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { SubmitButton } from "./submit-button";
+import SendOtpToEmailFactory from "@/factory/SendOtpToEmailFactory";
 
 export default function Login({
   searchParams,
@@ -12,20 +13,13 @@ export default function Login({
     "use server";
 
     const email = formData.get("email") as string;
-    const supabase = createClient();
 
-    const { error } = await supabase.auth.signInWithOtp({
-      email,
-      options: {
-        shouldCreateUser: true,
-      },
-    });
-
-    if (error) {
-      return redirect("/login?message=Could not authenticate user");
+    try {
+      const sendOtpToEmailFactory = new SendOtpToEmailFactory();
+      await sendOtpToEmailFactory.execute({ email });
+    } catch (error) {
+      return redirect(`/login?message=${(error as Error).message || "Could not authenticate user"}`);
     }
-
-    // TODO: handle edge case later periodically, we have 3 email/hour limit
 
     return redirect(`/login?emailSubmitted=true&email=${email}&message=Check your email for the OTP`);
   };
