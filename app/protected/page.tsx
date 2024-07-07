@@ -15,14 +15,6 @@ export default async function ProtectedPage() {
       {/* Sidebar */}
       <div className="w-1/4 p-4 bg-white border-r">
         <div className="mb-8">
-          <h2 className="text-lg font-bold mb-2">Your Plan</h2>
-          <div className="p-4 bg-gray-100 rounded-lg">
-            <p className="font-semibold">Beta User</p>
-            <p className="text-sm text-gray-500">Expiry date is unavailable</p>
-          </div>
-        </div>
-
-        <div className="mb-8">
           <h2 className="text-lg font-bold mb-2">Chat Messages</h2>
           <div className="p-4 bg-gray-100 rounded-lg">
             <p className="text-2xl font-bold">0/50</p>
