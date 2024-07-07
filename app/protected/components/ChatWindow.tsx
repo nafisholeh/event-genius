@@ -4,6 +4,7 @@ import { useState } from "react";
 import type { FormEvent } from "react";
 import { Message } from "ai";
 import { useChat } from "ai/react";
+import Markdown from "markdown-to-jsx";
 
 export default function ChatWindow() {
   const [sourcesForMessages, setSourcesForMessages] = useState<Record<string, unknown>>({});
@@ -103,7 +104,18 @@ export default function ChatWindow() {
                       ? "table px-5 py-4 max-w-xl rounded-3xl bg-gray-300 text-black self-end ml-auto"
                       : "whitespace-pre-wrap p-3 w-full text-black self-start leading-snug"
                   }`}>
-                  {m.content}
+                  <Markdown
+                    options={{
+                      overrides: {
+                        p: {
+                          props: {
+                            className: "mb-4",
+                          },
+                        },
+                      },
+                    }}>
+                    {m.content}
+                  </Markdown>
                 </p>
               );
             })
