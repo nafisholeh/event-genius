@@ -10,15 +10,7 @@ export default function ChatWindow() {
   const chatWindowRef = useRef<HTMLDivElement>(null);
   const [sourcesForMessages, setSourcesForMessages] = useState<Record<string, unknown>>({});
 
-  const {
-    messages,
-    input,
-    setInput,
-    handleInputChange,
-    handleSubmit,
-    // isLoading: chatEndpointIsLoading,
-    setMessages,
-  } = useChat({
+  const { messages, input, setInput, handleInputChange, handleSubmit, setMessages } = useChat({
     api: "api/chat",
     onResponse(response) {
       const sourcesHeader = response.headers.get("x-sources");
@@ -58,38 +50,10 @@ export default function ChatWindow() {
     if (response.status === 200) {
       const responseMessages: Message[] = json.messages;
 
-      const toolCallMessages = responseMessages.filter((responseMessage: Message) => {
-        return (
-          (responseMessage.role === "assistant" && !!responseMessage.tool_calls?.length) ||
-          responseMessage.role === "tool"
-        );
-      });
-
-      const intermediateStepMessages = [];
-      for (let i = 0; i < toolCallMessages.length; i += 2) {
-        const aiMessage = toolCallMessages[i];
-        const toolMessage = toolCallMessages[i + 1];
-        intermediateStepMessages.push({
-          id: (messagesWithUserReply.length + i / 2).toString(),
-          role: "system" as const,
-          content: JSON.stringify({
-            action: aiMessage.tool_calls?.[0],
-            observation: toolMessage.content,
-          }),
-        });
-      }
-
-      const newMessages = messagesWithUserReply;
-      for (const message of intermediateStepMessages) {
-        newMessages.push(message);
-        setMessages([...newMessages]);
-        await new Promise((resolve) => setTimeout(resolve, 1000 + Math.random() * 1000));
-      }
-
       setMessages([
-        ...newMessages,
+        ...messagesWithUserReply,
         {
-          id: newMessages.length.toString(),
+          id: messagesWithUserReply.length.toString(),
           content: responseMessages[responseMessages.length - 1].content,
           role: "assistant",
         },
