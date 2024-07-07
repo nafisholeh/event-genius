@@ -109,7 +109,7 @@ export default function ChatWindow() {
 
   return (
     <div className="flex-1 flex flex-col p-4">
-      <h2 className="text-xl font-bold mb-4">Chat UI</h2>
+      <h2 className="text-xl font-bold mb-4">Event Genius</h2>
       <div ref={chatWindowRef} className="flex-1 p-4 bg-white border rounded-lg overflow-y-scroll">
         {messages.length > 0
           ? [...messages].map((m, i) => {
@@ -136,7 +136,7 @@ export default function ChatWindow() {
                 </p>
               );
             })
-          : "Welcome to the chats!"}
+          : "Your event planning assistant is here. How can I help you?"}
       </div>
       <form onSubmit={sendMessage} className="flex mt-4">
         <textarea
