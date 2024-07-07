@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, KeyboardEvent } from "react";
 import type { FormEvent } from "react";
 import { Message } from "ai";
 import { useChat } from "ai/react";
@@ -90,6 +90,16 @@ export default function ChatWindow() {
     }
   }
 
+  const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      const form = e.currentTarget.form;
+      if (form) {
+        form.requestSubmit();
+      }
+    }
+  };
+
   return (
     <div className="flex-1 flex flex-col p-4">
       <h2 className="text-xl font-bold mb-4">Chat UI</h2>
@@ -122,12 +132,13 @@ export default function ChatWindow() {
           : "Welcome to the chats!"}
       </div>
       <form onSubmit={sendMessage} className="flex mt-4">
-        <input
-          type="text"
+        <textarea
           placeholder="Type your message..."
           value={input}
           onChange={handleInputChange}
-          className="flex-1 p-2 border rounded-l-lg"
+          onKeyDown={handleKeyDown}
+          rows={1}
+          className="flex-1 p-2 border rounded-l-lg resize-none overflow-y-auto max-h-24"
         />
         <button className="p-2 bg-black text-white rounded-r-lg">Send</button>
       </form>
