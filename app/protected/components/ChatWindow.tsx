@@ -8,18 +8,9 @@ import Markdown from "markdown-to-jsx";
 
 export default function ChatWindow() {
   const chatWindowRef = useRef<HTMLDivElement>(null);
-  const [sourcesForMessages, setSourcesForMessages] = useState<Record<string, unknown>>({});
 
   const { messages, input, setInput, handleInputChange, handleSubmit, setMessages } = useChat({
     api: "api/chat",
-    onResponse(response) {
-      const sourcesHeader = response.headers.get("x-sources");
-      const sources = sourcesHeader ? JSON.parse(Buffer.from(sourcesHeader, "base64").toString("utf8")) : [];
-      const messageIndexHeader = response.headers.get("x-message-index");
-      if (sources.length && messageIndexHeader !== null) {
-        setSourcesForMessages({ ...sourcesForMessages, [messageIndexHeader]: sources });
-      }
-    },
     streamMode: "text",
     onError: (e) => {
       console.log(e.message);
