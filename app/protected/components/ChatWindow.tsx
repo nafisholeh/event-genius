@@ -1,12 +1,13 @@
 "use client";
 
-import { useState, KeyboardEvent } from "react";
+import { useState, useEffect, KeyboardEvent, useRef } from "react";
 import type { FormEvent } from "react";
 import { Message } from "ai";
 import { useChat } from "ai/react";
 import Markdown from "markdown-to-jsx";
 
 export default function ChatWindow() {
+  const chatWindowRef = useRef<HTMLDivElement>(null);
   const [sourcesForMessages, setSourcesForMessages] = useState<Record<string, unknown>>({});
 
   const {
@@ -32,6 +33,12 @@ export default function ChatWindow() {
       console.log(e.message);
     },
   });
+
+  useEffect(() => {
+    if (chatWindowRef.current) {
+      chatWindowRef.current.scrollTop = chatWindowRef.current.scrollHeight;
+    }
+  }, [messages]);
 
   async function sendMessage(e: FormEvent<HTMLFormElement>) {
     handleSubmit(e);
@@ -103,7 +110,7 @@ export default function ChatWindow() {
   return (
     <div className="flex-1 flex flex-col p-4">
       <h2 className="text-xl font-bold mb-4">Chat UI</h2>
-      <div className="flex-1 p-4 bg-white border rounded-lg overflow-y-scroll">
+      <div ref={chatWindowRef} className="flex-1 p-4 bg-white border rounded-lg overflow-y-scroll">
         {messages.length > 0
           ? [...messages].map((m, i) => {
               return (
