@@ -92,10 +92,20 @@ export default function ChatWindow() {
   return (
     <div className="flex-1 flex flex-col p-4">
       <h2 className="text-xl font-bold mb-4">Chat UI</h2>
-      <div className="flex-1 p-4 bg-white border rounded-lg">
+      <div className="flex-1 p-4 bg-white border rounded-lg overflow-y-scroll">
         {messages.length > 0
-          ? [...messages].reverse().map((m, i) => {
-              return <p key={i}>{m.content}</p>;
+          ? [...messages].map((m, i) => {
+              return (
+                <p
+                  key={i}
+                  className={`mb-2 ${
+                    m.role === "user"
+                      ? "table px-5 py-4 max-w-xl rounded-3xl bg-gray-300 text-black self-end ml-auto"
+                      : "whitespace-pre-wrap p-3 w-full text-black self-start leading-snug"
+                  }`}>
+                  {m.content}
+                </p>
+              );
             })
           : "Welcome to the chats!"}
       </div>
