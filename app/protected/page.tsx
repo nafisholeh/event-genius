@@ -1,5 +1,6 @@
 import ValidateUserAuthFactory from "@/factory/ValidateUserAuthFactory";
 import { redirect } from "next/navigation";
+import ChatWindow from "./components/ChatWindow";
 
 export default async function ProtectedPage() {
   const validateUserAuthFactory = new ValidateUserAuthFactory();
@@ -40,16 +41,7 @@ export default async function ProtectedPage() {
       </div>
 
       {/* Main Chat Window */}
-      <div className="flex-1 flex flex-col p-4">
-        <h2 className="text-xl font-bold mb-4">Chat UI</h2>
-        <div className="flex-1 p-4 bg-white border rounded-lg">
-          <p className="text-gray-500">Welcome to the chat!</p>
-        </div>
-        <div className="flex mt-4">
-          <input type="text" placeholder="Type your message..." className="flex-1 p-2 border rounded-l-lg" />
-          <button className="p-2 bg-black text-white rounded-r-lg">Send</button>
-        </div>
-      </div>
+      <ChatWindow />
     </div>
   );
 }
