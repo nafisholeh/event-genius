@@ -27,7 +27,13 @@ export default function ChatWindow() {
     handleSubmit(e);
     setInput("");
 
-    const messagesWithUserReply = messages.concat({ id: messages.length.toString(), content: input, role: "user" });
+    const messageObject = { id: messages.length.toString(), sessionId: 1, content: input, role: "user" };
+    const messagesWithUserReply = messages.concat(messageObject as Message);
+
+    await fetch("api/store-chat", {
+      method: "POST",
+      body: JSON.stringify(messageObject),
+    });
 
     const response = await fetch("api/chat", {
       method: "POST",
