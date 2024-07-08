@@ -57,6 +57,6 @@ export async function POST(req: NextRequest) {
 
     return new StreamingTextResponse(stream);
   } catch (e) {
-    return NextResponse.json({ error: (e as Error).message }, { status: (e as Error).status ?? 500 });
+    return NextResponse.json({ error: (e as Error).message }, { status: 500 });
   }
 }
