@@ -1,13 +1,15 @@
 "use client";
 
-import { useEffect, KeyboardEvent, useRef } from "react";
+import { useEffect, useContext, useCallback, KeyboardEvent, useRef } from "react";
 import type { FormEvent } from "react";
 import { Message } from "ai";
 import { useChat } from "ai/react";
 import Markdown from "markdown-to-jsx";
+import { SessionContext } from "../contexts/SessionContext";
 
 export default function ChatWindow() {
   const chatWindowRef = useRef<HTMLDivElement>(null);
+  const { sessions, sessionId, addSession } = useContext(SessionContext);
 
   const { messages, input, setInput, handleInputChange, handleSubmit, setMessages, isLoading } = useChat({
     api: "api/chat",
@@ -17,18 +19,14 @@ export default function ChatWindow() {
     },
   });
 
-  useEffect(() => {
-    const restoreChat = async () => {
-      const response = await fetch("api/retrieve-chat", {
-        method: "POST",
-        body: JSON.stringify({ sessionId: 1 }),
-      });
-      const json = await response.json();
-      setMessages(json.data);
-    };
-
-    restoreChat();
-  }, []);
+  const restoreChat = useCallback(async () => {
+    const response = await fetch("api/retrieve-chat", {
+      method: "POST",
+      body: JSON.stringify({ sessionId }),
+    });
+    const json = await response.json();
+    setMessages(json.data);
+  }, [sessionId, setMessages]);
 
   useEffect(() => {
     if (chatWindowRef.current) {
@@ -42,7 +40,7 @@ export default function ChatWindow() {
       if (aiMessage) {
         await fetch("api/store-chat", {
           method: "POST",
-          body: JSON.stringify({ sessionId: 1, content: aiMessage.content, role: aiMessage.role }),
+          body: JSON.stringify({ sessionId, content: aiMessage.content, role: aiMessage.role }),
         });
       }
     };
@@ -53,11 +51,21 @@ export default function ChatWindow() {
     }
   }, [isLoading]);
 
+  useEffect(() => {
+    restoreChat();
+  }, [sessionId, restoreChat]);
+
   async function sendMessage(e: FormEvent<HTMLFormElement>) {
     handleSubmit(e);
     setInput("");
 
-    const messageObject = { sessionId: 1, content: input, role: "user" };
+    // if there are no sessions, create a new session
+    if (sessions.length === 0) {
+      addSession();
+    }
+
+    const currentSession = sessions.length === 0 ? 0 : sessionId;
+    const messageObject = { sessionId: currentSession, content: input, role: "user" };
     const messagesWithUserReply = messages.concat({ id: messages.length.toString(), ...messageObject } as Message);
 
     await fetch("api/store-chat", {
