@@ -1,8 +1,9 @@
-import { ICloudDBProvider, RoleType } from "../providers/ICloudDBProvider";
+import { ICloudDBProvider } from "../providers/ICloudDBProvider";
 import { IUserAuthProvider } from "@/core/auth/providers/IUserAuthProvider";
 import { NoUserDataError } from "../entities/errors/NoUserDataError";
+import ChatMessageEntity, { RoleType } from "../entities/ChatMessageEntity";
 
-type Dto = {
+export type RecordMessageType = {
   content: string;
   role: RoleType;
   sessionId: number;
@@ -14,23 +15,16 @@ export class RecordMessageUseCase {
     private userAuthProvider: IUserAuthProvider,
   ) {}
 
-  async execute(data: Dto): Promise<void> {
+  async execute(data: RecordMessageType): Promise<void> {
     const userId = await this.userAuthProvider.getUserId();
     if (!userId) {
       throw new NoUserDataError();
     }
 
-    const createdAt = new Date().toISOString();
+    const normalizedRole = data.role.toUpperCase() as RoleType;
+    const createdAt = new Date();
 
-    await this.cloudDBProvider.recordMessage({
-      data: {
-        id: null,
-        content: data.content,
-        role: data.role,
-        sessionId: data.sessionId,
-        createdAt: createdAt,
-        userId: userId,
-      },
-    });
+    const newMessage = new ChatMessageEntity("", userId, normalizedRole, data.content, createdAt, data.sessionId);
+    await this.cloudDBProvider.recordMessage({ newMessage });
   }
 }

@@ -19,14 +19,17 @@ export class PostgresqlPrisma implements ICloudDBProvider {
     return retrievedChat.map(ChatMessageEntity.fromDatabase);
   }
 
-  async recordMessage({ data }: { data: ChatMessageUIType }): Promise<void> {
+  async recordMessage({ newMessage }: { newMessage: ChatMessageEntity }): Promise<void> {
+    const normalizedMessage = newMessage.toDatabaseFormat();
+
+    // let database generate ID
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { id, ...messageWithoutId } = normalizedMessage;
+
     await this.client.chatMessages.create({
       data: {
-        content: data.content,
-        role: data.role === "assistant" ? RoleType.ASSISTANT : RoleType.USER,
-        session_id: data.sessionId,
-        created_at: data.createdAt,
-        user_id: data.userId,
+        ...messageWithoutId,
+        role: normalizedMessage.role as RoleType,
       },
     });
   }

@@ -111,4 +111,15 @@ export default class ChatMessageEntity {
       userId: this.userId,
     };
   }
+
+  public toDatabaseFormat() {
+    return {
+      id: this.id,
+      created_at: this.createdAt.toISOString(),
+      session_id: this.sessionId,
+      content: this.content,
+      role: this.role,
+      user_id: this.userId,
+    };
+  }
 }
