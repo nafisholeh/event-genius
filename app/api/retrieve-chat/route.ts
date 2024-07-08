@@ -1,17 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import RecordMessageFactory from "@/factory/RecordMessageFactory";
 import { PrismaClient } from "@prisma/client";
+import RetrieveChatFactory from "@/factory/RetrieveChatFactory";
+
+const prismaClient = new PrismaClient();
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
-  const { content, role, sessionId } = body;
+  const { sessionId } = body;
 
-  const prismaClient = new PrismaClient();
-  const recordMessageFactory = new RecordMessageFactory(prismaClient);
+  const retrieveChatFactory = new RetrieveChatFactory(prismaClient);
 
   try {
-    const data = await recordMessageFactory.execute({ content, role, sessionId });
+    const data = await retrieveChatFactory.execute({ sessionId: sessionId });
 
     return NextResponse.json({ data });
   } catch (e) {

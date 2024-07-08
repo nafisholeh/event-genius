@@ -1,4 +1,5 @@
-import { ICloudDBProvider, ChatMessage, ChatMessageList } from "@/core/chat/providers/ICloudDBProvider";
+import ChatMessageEntity, { ChatMessageUIType } from "@/core/chat/entities/ChatMessageEntity";
+import { ICloudDBProvider, ChatMessage } from "@/core/chat/providers/ICloudDBProvider";
 import { PrismaClient, RoleType } from "@prisma/client";
 
 export type RecordMessageFunction = (message: ChatMessage) => Promise<void>;
@@ -10,10 +11,14 @@ export class PostgresqlPrisma implements ICloudDBProvider {
     this.client = client;
   }
 
-  async readMessages(): Promise<ChatMessageList> {
-    const messages = await this.client.chatMessages.findMany();
+  async retrieveChatBySession({ sessionId }: { sessionId: number }): Promise<ChatMessageUIType[]> {
+    const retrievedChat = await this.client.chatMessages.findMany({
+      where: {
+        session_id: sessionId,
+      },
+    });
 
-    return messages as ChatMessageList;
+    return retrievedChat.map(ChatMessageEntity.fromDatabase);
   }
 
   async recordMessage({ data }: { data: ChatMessage }): Promise<void> {

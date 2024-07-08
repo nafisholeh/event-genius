@@ -18,6 +18,19 @@ export default function ChatWindow() {
   });
 
   useEffect(() => {
+    const restoreChat = async () => {
+      const response = await fetch("api/retrieve-chat", {
+        method: "POST",
+        body: JSON.stringify({ sessionId: 1 }),
+      });
+      const json = await response.json();
+      setMessages(json.data);
+    };
+
+    restoreChat();
+  }, []);
+
+  useEffect(() => {
     if (chatWindowRef.current) {
       chatWindowRef.current.scrollTop = chatWindowRef.current.scrollHeight;
     }

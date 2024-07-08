@@ -1,3 +1,5 @@
+import { ChatMessageUIType } from "../entities/ChatMessageEntity";
+
 export type ChatMessage = {
   content: string;
   role: "user" | "assistant";
@@ -8,16 +10,7 @@ export type ChatMessage = {
 
 export type RoleType = "user" | "assistant";
 
-export type ChatMessageList = {
-  id: string;
-  created_at: Date;
-  session_id: number | null;
-  content: string | null;
-  role: RoleType | null;
-  user_id: string | null;
-}[];
-
 export interface ICloudDBProvider {
-  readMessages(): Promise<ChatMessageList>;
+  retrieveChatBySession({ sessionId }: { sessionId: number }): Promise<ChatMessageUIType[]>;
   recordMessage({ data }: { data: ChatMessage }): Promise<void>;
 }
