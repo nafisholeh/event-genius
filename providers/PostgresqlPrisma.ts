@@ -1,5 +1,6 @@
 import ChatMessageEntity, { ChatMessageUIType } from "@/core/chat/entities/ChatMessageEntity";
 import { ICloudDBProvider } from "@/core/chat/providers/ICloudDBProvider";
+import { RetrieveChatType } from "@/core/chat/use-cases/RetrieveChatUseCase";
 import { PrismaClient, RoleType } from "@prisma/client";
 
 export class PostgresqlPrisma implements ICloudDBProvider {
@@ -9,10 +10,10 @@ export class PostgresqlPrisma implements ICloudDBProvider {
     this.client = client;
   }
 
-  async retrieveChatBySession({ sessionId }: { sessionId: number }): Promise<ChatMessageUIType[]> {
+  async retrieveChatBySession(data: RetrieveChatType): Promise<ChatMessageUIType[]> {
     const retrievedChat = await this.client.chatMessages.findMany({
       where: {
-        session_id: sessionId,
+        session_id: data.sessionId,
       },
     });
 
