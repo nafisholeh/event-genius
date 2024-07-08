@@ -4,7 +4,7 @@ export enum RoleType {
 }
 
 export type ChatMessageUIType = {
-  id: string;
+  id: string | null;
   createdAt: string;
   sessionId: number | null;
   content: string | null;

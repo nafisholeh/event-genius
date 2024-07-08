@@ -20,10 +20,11 @@ export class RecordMessageUseCase {
       throw new NoUserDataError();
     }
 
-    const createdAt = new Date();
+    const createdAt = new Date().toISOString();
 
     await this.cloudDBProvider.recordMessage({
       data: {
+        id: null,
         content: data.content,
         role: data.role,
         sessionId: data.sessionId,
