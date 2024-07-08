@@ -29,4 +29,12 @@ export class SupabaseAuth implements IUserAuthProvider {
 
     return !!user;
   }
+
+  async getUserId(): Promise<string | undefined> {
+    const {
+      data: { user },
+    } = await this.client.auth.getUser();
+
+    return user?.id;
+  }
 }

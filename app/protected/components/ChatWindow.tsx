@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, KeyboardEvent, useRef } from "react";
+import { useEffect, KeyboardEvent, useRef } from "react";
 import type { FormEvent } from "react";
 import { Message } from "ai";
 import { useChat } from "ai/react";
@@ -9,7 +9,7 @@ import Markdown from "markdown-to-jsx";
 export default function ChatWindow() {
   const chatWindowRef = useRef<HTMLDivElement>(null);
 
-  const { messages, input, setInput, handleInputChange, handleSubmit, setMessages } = useChat({
+  const { messages, input, setInput, handleInputChange, handleSubmit, setMessages, isLoading } = useChat({
     api: "api/chat",
     streamMode: "text",
     onError: (e) => {
@@ -22,6 +22,23 @@ export default function ChatWindow() {
       chatWindowRef.current.scrollTop = chatWindowRef.current.scrollHeight;
     }
   }, [messages]);
+
+  useEffect(() => {
+    const recordAIMessage = async () => {
+      const aiMessage = messages[messages.length - 1];
+      if (aiMessage) {
+        await fetch("api/store-chat", {
+          method: "POST",
+          body: JSON.stringify({ sessionId: 1, content: aiMessage.content, role: aiMessage.role }),
+        });
+      }
+    };
+
+    // AI completed its response
+    if (!isLoading) {
+      recordAIMessage();
+    }
+  }, [isLoading]);
 
   async function sendMessage(e: FormEvent<HTMLFormElement>) {
     handleSubmit(e);
