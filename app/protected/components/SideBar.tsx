@@ -7,7 +7,7 @@ import MessageTotal from "./MessageTotal";
 
 export default function SideBar() {
   const { sessions } = useContext(SessionContext);
-  const hasSessions = sessions.length > 0;
+  const hasSessions = sessions?.length > 0;
   const [isCollapsed, setIsCollapsed] = useState(true);
 
   useEffect(() => {
