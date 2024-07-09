@@ -45,7 +45,7 @@ export default function ChatWindow() {
     });
     const json = await response.json();
     const messages = json.data;
-    setMessageTotal(messages.length);
+    setMessageTotal(messages?.length || 0);
     setMessages(messages);
   }, [sessionId, setMessages, setMessageTotal]);
 
@@ -84,7 +84,7 @@ export default function ChatWindow() {
     setInput("");
 
     // if there are no sessions, create a new session
-    if (sessions.length === 0) {
+    if (sessions?.length === 0) {
       addSession();
     }
 

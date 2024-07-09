@@ -25,7 +25,7 @@ export const SessionContextProvider = ({ children }: { children: ReactNode }) =>
   const [sessionId, setSessionId] = useState<number | null>(null);
 
   const addSession = () => {
-    const newSessionId = sessions.length;
+    const newSessionId = sessions?.length || 0;
     setSessions((prevSessions) => [...prevSessions, newSessionId]);
     setSessionId(newSessionId);
   };

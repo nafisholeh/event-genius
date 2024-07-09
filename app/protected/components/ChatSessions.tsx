@@ -17,14 +17,16 @@ export default function ChatSessions() {
         </button>
       </div>
       <div className="space-y-2">
-        {sessions.map((session) => (
-          <button
-            key={session}
-            className="w-full p-2 text-left bg-gray-100 rounded-lg"
-            onClick={() => setSessionId(session)}>
-            Chat with Session {session}
-          </button>
-        ))}
+        {sessions?.length
+          ? sessions.map((session) => (
+              <button
+                key={session}
+                className="w-full p-2 text-left bg-gray-100 rounded-lg"
+                onClick={() => setSessionId(session)}>
+                Chat with Session {session}
+              </button>
+            ))
+          : null}
       </div>
     </div>
   );
