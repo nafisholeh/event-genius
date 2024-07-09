@@ -76,6 +76,7 @@ export default function ChatWindow() {
     if (!isLoading) {
       recordAIMessage();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading]);
 
   async function sendMessage(e: FormEvent<HTMLFormElement>) {

@@ -198,7 +198,7 @@ function WordCloud({ text }: { text: string }) {
     return () => {
       root.dispose();
     };
-  }, []);
+  }, [text]);
 
   return <div id="chartdiv" className="w-full h-full"></div>;
 }
