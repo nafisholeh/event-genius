@@ -37,13 +37,15 @@ export default function SideBar() {
         )}
       </div>
 
-      <div
-        className={`${isCollapsed ? "visible" : "hidden"} fixed inset-y-0 left-0 h-full w-6 bg-slate-50 flex items-center justify-center cursor-pointer text-slate-400 transition-transform duration-300 ease-in-out ${
-          isCollapsed ? "translate-x-0" : "translate-x-full"
-        }`}
-        onClick={() => setIsCollapsed(!isCollapsed)}>
-        {isCollapsed ? ">" : "<"}
-      </div>
+      {hasSessions ? (
+        <div
+          className={`${isCollapsed ? "visible" : "hidden"} fixed inset-y-0 left-0 h-full w-6 bg-slate-50 flex items-center justify-center cursor-pointer text-slate-400 transition-transform duration-300 ease-in-out ${
+            isCollapsed ? "translate-x-0" : "translate-x-full"
+          }`}
+          onClick={() => setIsCollapsed(!isCollapsed)}>
+          {isCollapsed ? ">" : "<"}
+        </div>
+      ) : null}
     </>
   );
 }
