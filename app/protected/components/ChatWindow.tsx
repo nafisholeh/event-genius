@@ -6,10 +6,12 @@ import { Message } from "ai";
 import { useChat } from "ai/react";
 import Markdown from "markdown-to-jsx";
 import { SessionContext } from "../contexts/SessionContext";
+import { MessageTotalContext } from "../contexts/MessageTotalContext";
 
 export default function ChatWindow() {
   const chatWindowRef = useRef<HTMLDivElement>(null);
   const { sessions, sessionId, addSession } = useContext(SessionContext);
+  const { setMessageTotal } = useContext(MessageTotalContext);
 
   const { messages, input, setInput, handleInputChange, handleSubmit, setMessages, isLoading } = useChat({
     api: "api/chat",
@@ -25,8 +27,10 @@ export default function ChatWindow() {
       body: JSON.stringify({ sessionId }),
     });
     const json = await response.json();
-    setMessages(json.data);
-  }, [sessionId, setMessages]);
+    const messages = json.data;
+    setMessageTotal(messages.length);
+    setMessages(messages);
+  }, [sessionId, setMessages, setMessageTotal]);
 
   useEffect(() => {
     if (chatWindowRef.current) {

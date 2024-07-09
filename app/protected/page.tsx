@@ -1,8 +1,9 @@
 import ValidateUserAuthFactory from "@/factory/ValidateUserAuthFactory";
 import { redirect } from "next/navigation";
 import ChatWindow from "./components/ChatWindow";
-import { SessionContextProvider } from "./contexts/SessionContext";
 import SideBar from "./components/SideBar";
+import { SessionContextProvider } from "./contexts/SessionContext";
+import { MessageTotalContextProvider } from "./contexts/MessageTotalContext";
 
 export default async function ProtectedPage() {
   const validateUserAuthFactory = new ValidateUserAuthFactory();
@@ -14,10 +15,12 @@ export default async function ProtectedPage() {
 
   return (
     <SessionContextProvider>
-      <div className="flex h-screen w-full bg-gray-100">
-        <SideBar />
-        <ChatWindow />
-      </div>
+      <MessageTotalContextProvider>
+        <div className="flex h-screen w-full bg-gray-100">
+          <SideBar />
+          <ChatWindow />
+        </div>
+      </MessageTotalContextProvider>
     </SessionContextProvider>
   );
 }
