@@ -15,6 +15,10 @@ export class SendOtpToEmailUseCase {
       throw new EmailValidationError();
     }
 
-    await this.userAuthProvider.sendOtpToEmail(userAuthCredsEntity.email);
+    const error = await this.userAuthProvider.sendOtpToEmail(userAuthCredsEntity.email);
+
+    if (error) {
+      throw error;
+    }
   }
 }

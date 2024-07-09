@@ -9,13 +9,15 @@ export class SupabaseAuth implements IUserAuthProvider {
     this.client = createClient();
   }
 
-  async sendOtpToEmail(email: string): Promise<void> {
-    await this.client.auth.signInWithOtp({
+  async sendOtpToEmail(email: string): Promise<Error | null> {
+    const response = await this.client.auth.signInWithOtp({
       email,
       options: {
         shouldCreateUser: true,
       },
     });
+
+    return response?.error;
   }
 
   async verifyOtp(email: string, otp: string): Promise<void> {
