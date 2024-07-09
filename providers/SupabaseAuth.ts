@@ -20,8 +20,10 @@ export class SupabaseAuth implements IUserAuthProvider {
     return response?.error;
   }
 
-  async verifyOtp(email: string, otp: string): Promise<void> {
-    await this.client.auth.verifyOtp({ email, token: otp, type: "email" });
+  async verifyOtp(email: string, otp: string): Promise<Error | null> {
+    const response = await this.client.auth.verifyOtp({ email, token: otp, type: "email" });
+
+    return response?.error;
   }
 
   async validateUserAuth(): Promise<boolean> {

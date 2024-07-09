@@ -18,7 +18,7 @@ export default function Login({
       const sendOtpToEmailFactory = new SendOtpToEmailFactory();
       await sendOtpToEmailFactory.execute({ email });
     } catch (error) {
-      return redirect(`/login?message=${(error as Error).message || "Could not authenticate user"}`);
+      return redirect(`/login?message=${(error as Error)?.message || "Could not authenticate user"}`);
     }
 
     return redirect(`/login?emailSubmitted=true&email=${email}&message=Check your email for the OTP`);
@@ -34,7 +34,9 @@ export default function Login({
       const verifyOtpFactory = new VerifyOtpFactory();
       await verifyOtpFactory.execute({ email, otp });
     } catch (error) {
-      return redirect(`/login?emailSubmitted=true&email=${email}&message=Invalid OTP`);
+      return redirect(
+        `/login?emailSubmitted=true&email=${email}&message=${(error as Error)?.message || "Invalid OTP"}`,
+      );
     }
 
     return redirect("/protected");

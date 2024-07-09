@@ -16,6 +16,10 @@ export default class VerifyOtpUseCase {
       throw new OtpRequiredError();
     }
 
-    await this.userAuthProvider.verifyOtp(userAuthCredsEntity.email, userAuthCredsEntity.otp);
+    const error = await this.userAuthProvider.verifyOtp(userAuthCredsEntity.email, userAuthCredsEntity.otp);
+
+    if (error) {
+      throw error;
+    }
   }
 }
