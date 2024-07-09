@@ -3,18 +3,13 @@ import { ICloudDBProvider } from "../providers/ICloudDBProvider";
 import { NoUserDataError } from "../entities/errors/NoUserDataError";
 import { ChatMessageUIType } from "../entities/ChatMessageEntity";
 
-export type RetrieveChatType = {
-  sessionId: number;
-  userId: string;
-};
-
 export class RetrieveChatUseCase {
   constructor(
     private cloudDBProvider: ICloudDBProvider,
     private userAuthProvider: IUserAuthProvider,
   ) {}
 
-  async execute(data: RetrieveChatType): Promise<ChatMessageUIType[]> {
+  async execute(data: { sessionId: number }): Promise<ChatMessageUIType[]> {
     const userId = await this.userAuthProvider.getUserId();
     if (!userId) {
       throw new NoUserDataError();

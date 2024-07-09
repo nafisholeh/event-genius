@@ -10,7 +10,9 @@ export async function POST(req: NextRequest) {
   const retrieveChatFactory = new RetrieveChatFactory(prisma);
 
   try {
-    const data = await retrieveChatFactory.execute({ sessionId: sessionId });
+    const data = await retrieveChatFactory.execute({
+      sessionId: sessionId,
+    });
 
     return NextResponse.json({ data });
   } catch (e) {

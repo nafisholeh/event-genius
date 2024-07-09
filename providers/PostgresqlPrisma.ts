@@ -1,6 +1,5 @@
 import ChatMessageEntity, { ChatMessageUIType } from "@/core/chat/entities/ChatMessageEntity";
-import { ICloudDBProvider } from "@/core/chat/providers/ICloudDBProvider";
-import { RetrieveChatType } from "@/core/chat/use-cases/RetrieveChatUseCase";
+import { ICloudDBProvider, RetrieveChatType } from "@/core/chat/providers/ICloudDBProvider";
 import { RetrieveSessionType } from "@/core/chat/use-cases/RetrieveSessionUseCase";
 import { RetrieveUserPromptType } from "@/core/chat/use-cases/RetrieveUserPromptUseCase";
 import { PrismaClient, RoleType } from "@prisma/client";

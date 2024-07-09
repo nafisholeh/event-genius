@@ -1,7 +1,11 @@
 import ChatMessageEntity, { ChatMessageUIType } from "../entities/ChatMessageEntity";
-import { RetrieveChatType } from "../use-cases/RetrieveChatUseCase";
 import { RetrieveSessionType } from "../use-cases/RetrieveSessionUseCase";
 import { RetrieveUserPromptType } from "../use-cases/RetrieveUserPromptUseCase";
+
+export type RetrieveChatType = {
+  sessionId: number;
+  userId: string;
+};
 
 export interface ICloudDBProvider {
   retrieveUserPrompts(data: RetrieveUserPromptType): Promise<ChatMessageUIType[]>;
