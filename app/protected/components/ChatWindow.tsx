@@ -126,7 +126,7 @@ export default function ChatWindow() {
   };
 
   return (
-    <div className="flex-1 flex flex-col p-4">
+    <div className="flex-1 flex flex-col p-4 pl-9 sm:pl-4">
       <h2 className="text-xl font-bold mb-4">Event Genius</h2>
       <div ref={chatWindowRef} className="flex-1 p-4 bg-white border rounded-lg overflow-y-scroll">
         {messages.length > 0

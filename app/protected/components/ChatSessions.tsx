@@ -8,7 +8,14 @@ export default function ChatSessions() {
 
   return (
     <div>
-      <h2 className="text-lg font-bold mb-2">Chats</h2>
+      <div className="flex flex-row justify-between items-end mb-4">
+        <div>
+          <h2 className="text-lg font-bold">Chats</h2>
+        </div>
+        <button className="bg-black text-2xl text-white rounded-full w-[40px] h-[40px]" onClick={addSession}>
+          +
+        </button>
+      </div>
       <div className="space-y-2">
         {sessions.map((session) => (
           <button
@@ -18,9 +25,6 @@ export default function ChatSessions() {
             Chat with Session {session}
           </button>
         ))}
-        <button className="w-full p-2 text-left bg-black text-white rounded-lg" onClick={addSession}>
-          Start New Chat
-        </button>
       </div>
     </div>
   );
