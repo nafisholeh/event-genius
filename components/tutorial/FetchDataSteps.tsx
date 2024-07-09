@@ -86,7 +86,7 @@ export default function FetchDataSteps() {
       </Step>
 
       <Step title="Build in a weekend and scale to millions!">
-        <p>You're ready to launch your product to the world! 🚀</p>
+        <p>You&apos;re ready to launch your product to the world! 🚀</p>
       </Step>
     </ol>
   );

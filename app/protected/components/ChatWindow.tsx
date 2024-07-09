@@ -137,7 +137,9 @@ export default function ChatWindow() {
     <div className="flex-1 flex flex-col p-4 pl-9 sm:pl-4">
       <div className="flex justify-between items-end mb-4">
         <h2 className="text-xl font-bold">Event Genius</h2>
-        <button className="bg-slate-500 rounded-lg text-white p-2" onClick={toggleUIMode}>{mode === "chat" ? "Word Cloud" : "Go to Chat"}</button>
+        <button className="bg-slate-500 rounded-lg text-white p-2" onClick={toggleUIMode}>
+          {mode === "chat" ? "Word Cloud" : "Go to Chat"}
+        </button>
       </div>
       {mode === "chat" ? (
         <>
