@@ -10,7 +10,7 @@ import { MessageTotalContext } from "../contexts/MessageTotalContext";
 
 export default function ChatWindow() {
   const chatWindowRef = useRef<HTMLDivElement>(null);
-  const { sessions, sessionId, addSession } = useContext(SessionContext);
+  const { sessions, sessionId, setSessions, addSession } = useContext(SessionContext);
   const { setMessageTotal } = useContext(MessageTotalContext);
 
   const { messages, input, setInput, handleInputChange, handleSubmit, setMessages, isLoading } = useChat({
@@ -20,6 +20,19 @@ export default function ChatWindow() {
       console.log(e.message);
     },
   });
+
+  const retriveSession = useCallback(async () => {
+    const response = await fetch("api/retrieve-session", {
+      method: "POST",
+    });
+    const json = await response.json();
+    const sessions = json.data;
+    setSessions(sessions);
+  }, [setSessions]);
+
+  useEffect(() => {
+    retriveSession();
+  }, [retriveSession]);
 
   const restoreChat = useCallback(async () => {
     const response = await fetch("api/retrieve-chat", {

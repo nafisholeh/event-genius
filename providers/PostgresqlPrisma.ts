@@ -10,6 +10,14 @@ export class PostgresqlPrisma implements ICloudDBProvider {
     this.client = client;
   }
 
+  async retrieveMaxSessionId(): Promise<number | null> {
+    const retrievedMaxSessionId = await this.client.chatMessages.aggregate({
+      _max: { session_id: true },
+    });
+
+    return retrievedMaxSessionId._max.session_id;
+  }
+
   async retrieveChatBySession(data: RetrieveChatType): Promise<ChatMessageUIType[]> {
     const retrievedChat = await this.client.chatMessages.findMany({
       where: {

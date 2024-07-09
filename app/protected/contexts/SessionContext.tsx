@@ -5,6 +5,7 @@ import React, { createContext, useState, ReactNode, Dispatch, SetStateAction } f
 interface SessionContextType {
   sessions: number[];
   sessionId: number | null;
+  setSessions: Dispatch<SetStateAction<number[]>>;
   setSessionId: Dispatch<SetStateAction<number | null>>;
   addSession: () => void;
 }
@@ -12,6 +13,7 @@ interface SessionContextType {
 const defaultSessionContext: SessionContextType = {
   sessions: [],
   sessionId: null,
+  setSessions: () => {},
   setSessionId: () => {},
   addSession: () => {},
 };
@@ -29,7 +31,7 @@ export const SessionContextProvider = ({ children }: { children: ReactNode }) =>
   };
 
   return (
-    <SessionContext.Provider value={{ sessions, sessionId, setSessionId, addSession }}>
+    <SessionContext.Provider value={{ sessions, sessionId, setSessions, setSessionId, addSession }}>
       {children}
     </SessionContext.Provider>
   );
