@@ -12,7 +12,7 @@ export class RetrieveSessionUseCase {
     private userAuthProvider: IUserAuthProvider,
   ) {}
 
-  async execute(): Promise<number[] | null> {
+  async execute(): Promise<number[]> {
     const userId = await this.userAuthProvider.getUserId();
     if (!userId) {
       throw new NoUserDataError();
@@ -30,6 +30,6 @@ export class RetrieveSessionUseCase {
       return sessionList;
     }
 
-    return null;
+    return [];
   }
 }
