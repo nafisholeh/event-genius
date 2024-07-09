@@ -34,7 +34,7 @@ export default function ChatWindow() {
     retriveSession();
   }, [retriveSession]);
 
-  const restoreChat = useCallback(async () => {
+  const retrieveChat = useCallback(async () => {
     const response = await fetch("api/retrieve-chat", {
       method: "POST",
       body: JSON.stringify({ sessionId }),
@@ -44,6 +44,12 @@ export default function ChatWindow() {
     setMessageTotal(messages.length);
     setMessages(messages);
   }, [sessionId, setMessages, setMessageTotal]);
+
+  useEffect(() => {
+    if (sessionId !== null) {
+      retrieveChat();
+    }
+  }, [sessionId, retrieveChat]);
 
   useEffect(() => {
     if (chatWindowRef.current) {
@@ -67,10 +73,6 @@ export default function ChatWindow() {
       recordAIMessage();
     }
   }, [isLoading]);
-
-  useEffect(() => {
-    restoreChat();
-  }, [sessionId, restoreChat]);
 
   async function sendMessage(e: FormEvent<HTMLFormElement>) {
     handleSubmit(e);
