@@ -14,7 +14,7 @@ type UIModeType = "chat" | "wordcloud";
 export default function ChatWindow() {
   const chatWindowRef = useRef<HTMLDivElement>(null);
   const [mode, setMode] = useState<UIModeType>("chat");
-  const { sessions, sessionId, setSessions, addSession } = useContext(SessionContext);
+  const { sessions, sessionId, setSessionChangeDisabled, setSessions, addSession } = useContext(SessionContext);
   const { setMessageTotal } = useContext(MessageTotalContext);
 
   const { messages, input, setInput, handleInputChange, handleSubmit, setMessages, isLoading } = useChat({
@@ -72,8 +72,13 @@ export default function ChatWindow() {
       }
     };
 
+    if (isLoading) {
+      // prevent user changing active sessions before AI response completed
+      setSessionChangeDisabled(true);
+    }
     // AI completed its response
     if (!isLoading) {
+      setSessionChangeDisabled(false);
       recordAIMessage();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
