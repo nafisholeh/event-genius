@@ -1,6 +1,8 @@
 import ChatMessageEntity, { ChatMessageUIType } from "@/core/chat/entities/ChatMessageEntity";
 import { ICloudDBProvider } from "@/core/chat/providers/ICloudDBProvider";
 import { RetrieveChatType } from "@/core/chat/use-cases/RetrieveChatUseCase";
+import { RetrieveSessionType } from "@/core/chat/use-cases/RetrieveSessionUseCase";
+import { RetrieveUserPromptType } from "@/core/chat/use-cases/RetrieveUserPromptUseCase";
 import { PrismaClient, RoleType } from "@prisma/client";
 
 export class PostgresqlPrisma implements ICloudDBProvider {
@@ -10,19 +12,23 @@ export class PostgresqlPrisma implements ICloudDBProvider {
     this.client = client;
   }
 
-  async retrieveUserPrompts(): Promise<ChatMessageUIType[]> {
+  async retrieveUserPrompts(data: RetrieveUserPromptType): Promise<ChatMessageUIType[]> {
     const retrievedUserPrompts = await this.client.chatMessages.findMany({
       where: {
         role: "USER",
+        user_id: data.userId,
       },
     });
 
     return retrievedUserPrompts.map(ChatMessageEntity.fromDatabase);
   }
 
-  async retrieveMaxSessionId(): Promise<number | null> {
+  async retrieveMaxSessionId(data: RetrieveSessionType): Promise<number | null> {
     const retrievedMaxSessionId = await this.client.chatMessages.aggregate({
       _max: { session_id: true },
+      where: {
+        user_id: data.userId,
+      },
     });
 
     return retrievedMaxSessionId._max.session_id;
@@ -32,6 +38,7 @@ export class PostgresqlPrisma implements ICloudDBProvider {
     const retrievedChat = await this.client.chatMessages.findMany({
       where: {
         session_id: data.sessionId,
+        user_id: data.userId,
       },
     });
 

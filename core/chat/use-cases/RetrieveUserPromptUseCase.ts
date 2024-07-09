@@ -2,6 +2,10 @@ import { IUserAuthProvider } from "@/core/auth/providers/IUserAuthProvider";
 import { ICloudDBProvider } from "../providers/ICloudDBProvider";
 import { NoUserDataError } from "../entities/errors/NoUserDataError";
 
+export type RetrieveUserPromptType = {
+  userId: string;
+};
+
 export class RetrieveUserPromptUseCase {
   constructor(
     private cloudDBProvider: ICloudDBProvider,
@@ -14,7 +18,7 @@ export class RetrieveUserPromptUseCase {
       throw new NoUserDataError();
     }
 
-    const retrievedUserPrompts = await this.cloudDBProvider.retrieveUserPrompts();
+    const retrievedUserPrompts = await this.cloudDBProvider.retrieveUserPrompts({ userId });
 
     const userPrompts = retrievedUserPrompts.reduce((acc, currentMessage) => {
       if (currentMessage.content) {

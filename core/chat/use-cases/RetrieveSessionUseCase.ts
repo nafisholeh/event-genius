@@ -2,6 +2,10 @@ import { IUserAuthProvider } from "@/core/auth/providers/IUserAuthProvider";
 import { ICloudDBProvider } from "../providers/ICloudDBProvider";
 import { NoUserDataError } from "../entities/errors/NoUserDataError";
 
+export type RetrieveSessionType = {
+  userId: string;
+};
+
 export class RetrieveSessionUseCase {
   constructor(
     private cloudDBProvider: ICloudDBProvider,
@@ -14,7 +18,7 @@ export class RetrieveSessionUseCase {
       throw new NoUserDataError();
     }
 
-    const retrievedMaxSessionId = await this.cloudDBProvider.retrieveMaxSessionId();
+    const retrievedMaxSessionId = await this.cloudDBProvider.retrieveMaxSessionId({ userId });
 
     if (retrievedMaxSessionId) {
       const sessionList = [];

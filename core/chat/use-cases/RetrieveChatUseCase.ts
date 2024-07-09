@@ -5,6 +5,7 @@ import { ChatMessageUIType } from "../entities/ChatMessageEntity";
 
 export type RetrieveChatType = {
   sessionId: number;
+  userId: string;
 };
 
 export class RetrieveChatUseCase {
@@ -21,6 +22,7 @@ export class RetrieveChatUseCase {
 
     const retrievedChat = await this.cloudDBProvider.retrieveChatBySession({
       sessionId: data.sessionId,
+      userId,
     });
 
     const sortedChat = retrievedChat.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
