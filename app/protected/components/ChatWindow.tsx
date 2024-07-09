@@ -88,7 +88,7 @@ export default function ChatWindow() {
       addSession();
     }
 
-    const currentSession = sessions.length === 0 ? 0 : sessionId;
+    const currentSession = sessions?.length === 0 ? 0 : sessionId;
     const messageObject = { sessionId: currentSession, content: input, role: "user" };
     const messagesWithUserReply = messages.concat({ id: messages.length.toString(), ...messageObject } as Message);
 
