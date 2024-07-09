@@ -8,6 +8,7 @@
     "format": "prettier --write ."
   },
   "dependencies": {
+    "@amcharts/amcharts5": "^5.9.13",
     "@langchain/openai": "^0.2.1",
     "@prisma/client": "^5.16.1",
     "@supabase/ssr": "latest",
