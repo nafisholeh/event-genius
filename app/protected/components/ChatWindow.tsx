@@ -105,6 +105,7 @@ export default function ChatWindow() {
     }
     // AI completed its response
     if (!isLoading) {
+      setMessageTotal(messages?.length || 0);
       setSessionChangeDisabled(false);
       recordAIMessage();
     }
@@ -114,6 +115,7 @@ export default function ChatWindow() {
   async function sendMessage(e: FormEvent<HTMLFormElement>) {
     if (sessionChangeDisabled || isRetrievingChat) return;
 
+    setMessageTotal(messages?.length + 1 || 0);
     handleSubmit(e);
     setInput("");
 
