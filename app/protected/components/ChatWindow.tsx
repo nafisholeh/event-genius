@@ -42,9 +42,8 @@ export default function ChatWindow() {
   }, [setSessions]);
 
   useEffect(() => {
-    if (sessions?.length > 0) return;
     retriveSession();
-  }, [retriveSession, sessions]);
+  }, [retriveSession]);
 
   const retrieveChat = useCallback(async () => {
     try {
