@@ -6,6 +6,7 @@ import { Message } from "ai";
 import { useChat } from "ai/react";
 import { SessionContext } from "../contexts/SessionContext";
 import { MessageTotalContext } from "../contexts/MessageTotalContext";
+import { ChatContext } from "../contexts/ChatContext";
 import WordCloudContainer from "./WordCloud";
 import ChatMessages from "./ChatMessages";
 
@@ -16,10 +17,10 @@ export default function ChatWindow() {
   const abortControllerRef = useRef<AbortController | null>(null);
 
   const [mode, setMode] = useState<UIModeType>("chat");
-  const [isRetrievingChat, setIsRetrievingChat] = useState<boolean>(false);
 
   const { sessions, sessionId, sessionChangeDisabled, setSessionChangeDisabled, setSessions, addSession } =
     useContext(SessionContext);
+  const { isRetrievingChat, setIsRetrievingChat } = useContext(ChatContext);
   const { setMessageTotal } = useContext(MessageTotalContext);
 
   const { messages, input, setInput, handleInputChange, handleSubmit, setMessages, isLoading } = useChat({
@@ -39,7 +40,7 @@ export default function ChatWindow() {
     const sessions = json.data;
     setSessions(sessions);
     setIsRetrievingChat(false);
-  }, [setSessions]);
+  }, [setIsRetrievingChat, setSessions]);
 
   useEffect(() => {
     retriveSession();
@@ -73,7 +74,7 @@ export default function ChatWindow() {
 
       setIsRetrievingChat(false);
     }
-  }, [sessionId, setMessageTotal, setMessages]);
+  }, [sessionId, setIsRetrievingChat, setMessageTotal, setMessages]);
 
   useEffect(() => {
     if (sessionId !== null) {

@@ -4,6 +4,7 @@ import ChatWindow from "./components/ChatWindow";
 import SideBar from "./components/SideBar";
 import { SessionContextProvider } from "./contexts/SessionContext";
 import { MessageTotalContextProvider } from "./contexts/MessageTotalContext";
+import { ChatContextProvider } from "./contexts/ChatContext";
 
 export default async function ProtectedPage() {
   const validateUserAuthFactory = new ValidateUserAuthFactory();
@@ -16,10 +17,12 @@ export default async function ProtectedPage() {
   return (
     <SessionContextProvider>
       <MessageTotalContextProvider>
-        <div className="flex h-screen w-full bg-gray-100">
-          <SideBar />
-          <ChatWindow />
-        </div>
+        <ChatContextProvider>
+          <div className="flex h-screen w-full bg-gray-100">
+            <SideBar />
+            <ChatWindow />
+          </div>
+        </ChatContextProvider>
       </MessageTotalContextProvider>
     </SessionContextProvider>
   );
