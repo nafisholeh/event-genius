@@ -187,13 +187,16 @@ export default function ChatWindow() {
               value={input}
               onChange={handleInputChange}
               onKeyDown={handleKeyDown}
-              disabled={sessionChangeDisabled || isRetrievingChat}
               rows={1}
               className="flex-1 p-2 border rounded-l-lg resize-none overflow-y-auto max-h-24"
             />
             <button
               disabled={sessionChangeDisabled || isRetrievingChat}
-              className="p-2 bg-black text-white rounded-r-lg">
+              className={`p-2 rounded-r-lg ${
+                sessionChangeDisabled || isRetrievingChat
+                  ? "bg-gray-400 cursor-not-allowed text-white"
+                  : "bg-black text-white"
+              }`}>
               Send
             </button>
           </form>
