@@ -28,15 +28,15 @@ export default function ChatWindow() {
   });
 
   const retriveSession = useCallback(async () => {
-    setSessionChangeDisabled(true);
+    setIsRetrievingChat(true);
     const response = await fetch("api/retrieve-session", {
       method: "POST",
     });
     const json = await response.json();
     const sessions = json.data;
     setSessions(sessions);
-    setSessionChangeDisabled(false);
-  }, [setSessions, setSessionChangeDisabled]);
+    setIsRetrievingChat(false);
+  }, [setSessions]);
 
   useEffect(() => {
     if (sessions?.length > 0) return;
@@ -169,11 +169,13 @@ export default function ChatWindow() {
               value={input}
               onChange={handleInputChange}
               onKeyDown={handleKeyDown}
-              disabled={sessionChangeDisabled}
+              disabled={sessionChangeDisabled || isRetrievingChat}
               rows={1}
               className="flex-1 p-2 border rounded-l-lg resize-none overflow-y-auto max-h-24"
             />
-            <button disabled={sessionChangeDisabled} className="p-2 bg-black text-white rounded-r-lg">
+            <button
+              disabled={sessionChangeDisabled || isRetrievingChat}
+              className="p-2 bg-black text-white rounded-r-lg">
               Send
             </button>
           </form>
