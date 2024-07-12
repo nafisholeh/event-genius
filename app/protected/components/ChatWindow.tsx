@@ -15,7 +15,8 @@ export default function ChatWindow() {
   const chatWindowRef = useRef<HTMLDivElement>(null);
   const [mode, setMode] = useState<UIModeType>("chat");
   const [isRetrievingChat, setIsRetrievingChat] = useState<boolean>(false);
-  const { sessions, sessionId, setSessionChangeDisabled, setSessions, addSession } = useContext(SessionContext);
+  const { sessions, sessionId, sessionChangeDisabled, setSessionChangeDisabled, setSessions, addSession } =
+    useContext(SessionContext);
   const { setMessageTotal } = useContext(MessageTotalContext);
 
   const { messages, input, setInput, handleInputChange, handleSubmit, setMessages, isLoading } = useChat({
@@ -168,10 +169,13 @@ export default function ChatWindow() {
               value={input}
               onChange={handleInputChange}
               onKeyDown={handleKeyDown}
+              disabled={sessionChangeDisabled}
               rows={1}
               className="flex-1 p-2 border rounded-l-lg resize-none overflow-y-auto max-h-24"
             />
-            <button className="p-2 bg-black text-white rounded-r-lg">Send</button>
+            <button disabled={sessionChangeDisabled} className="p-2 bg-black text-white rounded-r-lg">
+              Send
+            </button>
           </form>
         </>
       ) : (
