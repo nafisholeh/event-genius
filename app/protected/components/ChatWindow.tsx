@@ -41,16 +41,20 @@ export default function ChatWindow() {
 
   const retrieveChat = useCallback(async () => {
     setIsRetrievingChat(true);
+    setSessionChangeDisabled(true);
     const response = await fetch("api/retrieve-chat", {
       method: "POST",
       body: JSON.stringify({ sessionId }),
     });
-    setIsRetrievingChat(false);
     const json = await response.json();
     const messages = json.data;
-    setMessageTotal(messages?.length || 0);
+
     setMessages(messages);
-  }, [sessionId, setMessages, setMessageTotal]);
+    setMessageTotal(messages?.length || 0);
+
+    setIsRetrievingChat(false);
+    setSessionChangeDisabled(false);
+  }, [sessionId, setMessageTotal, setMessages, setSessionChangeDisabled]);
 
   useEffect(() => {
     if (sessionId !== null) {
