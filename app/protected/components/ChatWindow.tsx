@@ -13,8 +13,11 @@ type UIModeType = "chat" | "wordcloud";
 
 export default function ChatWindow() {
   const chatWindowRef = useRef<HTMLDivElement>(null);
+  const abortControllerRef = useRef<AbortController | null>(null);
+
   const [mode, setMode] = useState<UIModeType>("chat");
   const [isRetrievingChat, setIsRetrievingChat] = useState<boolean>(false);
+
   const { sessions, sessionId, sessionChangeDisabled, setSessionChangeDisabled, setSessions, addSession } =
     useContext(SessionContext);
   const { setMessageTotal } = useContext(MessageTotalContext);
@@ -44,21 +47,34 @@ export default function ChatWindow() {
   }, [retriveSession, sessions]);
 
   const retrieveChat = useCallback(async () => {
-    setIsRetrievingChat(true);
-    setSessionChangeDisabled(true);
-    const response = await fetch("api/retrieve-chat", {
-      method: "POST",
-      body: JSON.stringify({ sessionId }),
-    });
-    const json = await response.json();
-    const messages = json.data;
+    try {
+      // cancel any ongoing message retrieval from previously selected session
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+      const controller = new AbortController();
+      abortControllerRef.current = controller;
 
-    setMessages(messages);
-    setMessageTotal(messages?.length || 0);
+      setIsRetrievingChat(true);
 
-    setIsRetrievingChat(false);
-    setSessionChangeDisabled(false);
-  }, [sessionId, setMessageTotal, setMessages, setSessionChangeDisabled]);
+      const response = await fetch("api/retrieve-chat", {
+        method: "POST",
+        body: JSON.stringify({ sessionId }),
+        signal: controller.signal,
+      });
+      const json = await response.json();
+      const messages = json.data;
+
+      setMessages(messages);
+      setMessageTotal(messages?.length || 0);
+
+      setIsRetrievingChat(false);
+    } catch (error) {
+      if ((error as Error).name === "AbortError") return;
+
+      setIsRetrievingChat(false);
+    }
+  }, [sessionId, setMessageTotal, setMessages]);
 
   useEffect(() => {
     if (sessionId !== null) {
