@@ -4,16 +4,17 @@ import { useEffect, useState, useContext, useCallback, KeyboardEvent, useRef } f
 import type { FormEvent } from "react";
 import { Message } from "ai";
 import { useChat } from "ai/react";
-import Markdown from "markdown-to-jsx";
 import { SessionContext } from "../contexts/SessionContext";
 import { MessageTotalContext } from "../contexts/MessageTotalContext";
 import WordCloudContainer from "./WordCloud";
+import ChatMessages from "./ChatMessages";
 
 type UIModeType = "chat" | "wordcloud";
 
 export default function ChatWindow() {
   const chatWindowRef = useRef<HTMLDivElement>(null);
   const [mode, setMode] = useState<UIModeType>("chat");
+  const [isRetrievingChat, setIsRetrievingChat] = useState<boolean>(false);
   const { sessions, sessionId, setSessionChangeDisabled, setSessions, addSession } = useContext(SessionContext);
   const { setMessageTotal } = useContext(MessageTotalContext);
 
@@ -39,10 +40,12 @@ export default function ChatWindow() {
   }, [retriveSession]);
 
   const retrieveChat = useCallback(async () => {
+    setIsRetrievingChat(true);
     const response = await fetch("api/retrieve-chat", {
       method: "POST",
       body: JSON.stringify({ sessionId }),
     });
+    setIsRetrievingChat(false);
     const json = await response.json();
     const messages = json.data;
     setMessageTotal(messages?.length || 0);
@@ -150,32 +153,7 @@ export default function ChatWindow() {
       {mode === "chat" ? (
         <>
           <div ref={chatWindowRef} className="flex-1 p-4 bg-white border rounded-lg overflow-y-scroll">
-            {messages.length > 0
-              ? [...messages].map((m, i) => {
-                  return (
-                    <p
-                      key={i}
-                      className={`mb-2 ${
-                        m.role === "user"
-                          ? "table px-5 py-4 max-w-xl rounded-3xl bg-gray-300 text-black self-end ml-auto"
-                          : "whitespace-pre-wrap p-3 w-full text-black self-start leading-snug"
-                      }`}>
-                      <Markdown
-                        options={{
-                          overrides: {
-                            p: {
-                              props: {
-                                className: "mb-4",
-                              },
-                            },
-                          },
-                        }}>
-                        {m.content}
-                      </Markdown>
-                    </p>
-                  );
-                })
-              : "Your event planning assistant is here. How can I help you?"}
+            <ChatMessages messages={messages} loading={isRetrievingChat} />
           </div>
           <form onSubmit={sendMessage} className="flex mt-4">
             <textarea
