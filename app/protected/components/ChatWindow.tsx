@@ -18,7 +18,7 @@ export default function ChatWindow() {
 
   const [mode, setMode] = useState<UIModeType>("chat");
 
-  const { sessions, sessionId, sessionChangeDisabled, setSessionChangeDisabled, setSessions, addSession } =
+  const { sessionId, sessionChangeDisabled, setSessionChangeDisabled, setSessions, addSession } =
     useContext(SessionContext);
   const { isRetrievingChat, setIsRetrievingChat } = useContext(ChatContext);
   const { setMessageTotal } = useContext(MessageTotalContext);
@@ -120,11 +120,11 @@ export default function ChatWindow() {
     setInput("");
 
     // if there are no sessions, create a new session
-    if (sessions?.length === 0) {
+    if (sessionId === null) {
       addSession();
     }
 
-    const currentSession = sessions?.length === 0 ? 0 : sessionId;
+    const currentSession = sessionId ?? 0;
     const messageObject = { sessionId: currentSession, content: input, role: "user" };
     const messagesWithUserReply = messages.concat({ id: messages.length.toString(), ...messageObject } as Message);
 
