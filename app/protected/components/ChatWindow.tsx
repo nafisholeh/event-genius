@@ -112,6 +112,8 @@ export default function ChatWindow() {
   }, [isLoading]);
 
   async function sendMessage(e: FormEvent<HTMLFormElement>) {
+    if (sessionChangeDisabled || isRetrievingChat) return;
+
     handleSubmit(e);
     setInput("");
 
